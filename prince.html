@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Glow Max — Tagda Ad Landing</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #0f1022;
+      --accent: #ff2d95;
+      --accent-2: #ff7ab6;
+      --glass: rgba(255,255,255,0.06);
+      --card-shadow: 0 20px 40px rgba(2,6,23,0.6);
+      --gold: #ffd36e;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: 'Poppins', sans-serif;
+      background:
+        radial-gradient(800px 400px at 10% 10%, rgba(255,45,149,0.08), transparent),
+        radial-gradient(700px 300px at 90% 80%, rgba(255,122,182,0.06), transparent),
+        linear-gradient(180deg, #fff 0%, #fff 55%);
+      color:#111;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* NAV */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px 32px;
+      background:linear-gradient(90deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6));
+      position:sticky;
+      top:0;
+      z-index:80;
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(0,0,0,0.05);
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      color:var(--accent);
+      font-family: 'Playfair Display', serif;
+      font-size:20px;
+    }
+    .nav-buttons{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      background:linear-gradient(90deg, var(--accent), var(--accent-2));
+      color:white;
+      border:none;
+      padding:10px 16px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(255,45,149,0.14);
+    }
+    .btn.ghost{
+      background:transparent;
+      border:1px solid rgba(0,0,0,0.06);
+      color:#222;
+    }
+
+    /* HERO */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 520px;
+      gap:36px;
+      align-items:center;
+      padding:48px;
+      max-width:1200px;
+      margin:28px auto;
+    }
+
+    .hero-left{
+      padding:24px;
+    }
+    .kicker{
+      display:inline-block;
+      background:linear-gradient(90deg, rgba(255,45,149,0.12), rgba(255,122,182,0.09));
+      color:var(--accent);
+      padding:6px 12px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:13px;
+      margin-bottom:12px;
+    }
+    h1{
+      font-family: 'Playfair Display', serif;
+      font-size:42px;
+      margin:6px 0 12px;
+      color:#111;
+      line-height:1.05;
+    }
+    p.lead{
+      color:#333;
+      font-size:17px;
+      margin-bottom:18px;
+    }
+    .taglines{
+      display:flex;
+      gap:10px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      background:linear-gradient(180deg,#fff,#fff);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,0.06);
+      font-weight:600;
+      box-shadow: 0 6px 18px rgba(3,3,3,0.04);
+    }
+
+    .cta-row{display:flex;gap:12px;align-items:center}
+    .price-bubble{
+      background:linear-gradient(180deg,var(--gold), #ffd88f);
+      padding:10px 14px;
+      border-radius:14px;
+      font-weight:800;
+      color:#472700;
+      box-shadow: 0 10px 24px rgba(255,211,110,0.20);
+      margin-left:8px;
+    }
+
+    /* 3D product card */
+    .card-wrap{
+      perspective:1400px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .product-card{
+      width:420px;
+      height:520px;
+      border-radius:22px;
+      background: linear-gradient(180deg, rgba(255,255,255,1), rgba(255,255,255,0.95));
+      box-shadow: var(--card-shadow);
+      transform-style: preserve-3d;
+      transition:transform .45s cubic-bezier(.2,.9,.2,1);
+      position:relative;
+      overflow:visible;
+      padding:22px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    .product-card:hover{ transform: rotateY(-10deg) rotateX(6deg) translateY(-8px); }
+
+    .product-top{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin-top:12px;
+    }
+    .bottle{
+      width:230px;
+      height:320px;
+      border-radius:24px;
+      background: linear-gradient(180deg,#fff,#ffeef8);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 25px 60px rgba(255,45,149,0.12);
+      transform: translateZ(40px);
+      position:relative;
+      overflow:hidden;
+    }
+    .bottle img{ width:170px; transform: translateY(6px); }
+
+    .glow-ring{
+      position:absolute;
+      inset:auto 20px 20px auto;
+      width:120px;height:120px;border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,45,149,0.18), transparent 35%);
+      transform: translateZ(20px) rotate(0deg);
+      filter: blur(14px);
+    }
+
+    .product-features{
+      margin-top:18px;
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      padding:0 12px;
+      transform: translateZ(20px);
+    }
+    .feature{
+      text-align:center;
+    }
+    .feature h4{ margin:0; font-size:16px; }
+    .feature p{ margin:4px 0 0; font-size:13px; color:#666; }
+
+    /* BEFORE / AFTER */
+    .before-after{
+      max-width:1200px;
+      margin:28px auto;
+      padding:24px;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .ba-wrapper{
+      width:540px;
+      height:320px;
+      position:relative;
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow: 0 18px 40px rgba(12,18,40,0.08);
+    }
+    .ba-wrapper img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .ba-after{
+      position:absolute;
+      top:0;left:0;
+      height:100%;
+      width:50%;
+      overflow:hidden;
+    }
+    .ba-handle{
+      position:absolute;
+      left:50%;
+      top:0;
+      transform:translateX(-50%);
+      height:100%;
+      width:4px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(0,0,0,0.05));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .ba-dot{
+      width:48px;height:48px;border-radius:999px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;color:white;font-weight:800;
+      transform:translateY(0);
+      box-shadow:0 10px 30px rgba(255,45,149,0.18);
+    }
+    .ba-range{ width:100%; margin-top:10px; }
+
+    /* TESTIMONIALS */
+    .testimonials{
+      padding:48px 24px;
+      background:linear-gradient(180deg, rgba(255,122,182,0.04), transparent);
+      margin:28px;
+      border-radius:18px;
+      box-shadow: 0 8px 30px rgba(3,8,23,0.03);
+    }
+    .t-slider{
+      display:flex;
+      gap:18px;
+      overflow:hidden;
+      scroll-behavior:smooth;
+      padding:12px;
+    }
+    .t-card{
+      min-width:260px;
+      background:white;
+      border-radius:14px;
+      padding:18px;
+      box-shadow: 0 8px 22px rgba(3,8,23,0.06);
+      flex-shrink:0;
+    }
+    .t-card h4{ margin:0 0 8px; font-size:16px;}
+    .t-card p{ color:#444; font-size:14px; margin:0; }
+
+    /* SPONSOR */
+    .sponsor{
+      max-width:1100px;
+      margin:28px auto;
+      padding:28px;
+      display:flex;
+      gap:24px;
+      align-items:center;
+      background: linear-gradient(90deg, rgba(255,240,246,0.95), rgba(255,255,255,0.95));
+      border-radius:16px;
+      box-shadow: 0 12px 30px rgba(3,8,23,0.04);
+    }
+    .s-photo{
+      width:160px;height:160px;border-radius:12px;overflow:hidden;border:6px solid #fff;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      transform:translateZ(40px);
+    }
+    .s-info h3{ margin:0 0 6px; }
+    .s-info p{ margin:0; color:#333; }
+
+    footer{
+      text-align:center;
+      padding:24px;
+      font-size:14px;
+      color:#666;
+    }
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{ grid-template-columns: 1fr; padding:24px; }
+      .card-wrap{ margin:auto; order: -1; }
+      .ba-wrapper{ width:100%; height:260px; }
+      .before-after{ flex-direction:column; gap:18px; padding:12px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Glow Max <span style="font-size:12px;color:#222;font-weight:600;margin-left:6px">— Real Glow, Real Confidence</span></div>
+    <div class="nav-buttons">
+      <button class="btn ghost" onclick="document.getElementById('testimonials').scrollIntoView({behavior:'smooth'})">Testimonials</button>
+      <button class="btn" onclick="window.location='#buy'">Buy Now</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero">
+      <div class="hero-left">
+        <span class="kicker">Naya Formula • Deep Glow</span>
+        <h1>Glow Max Cream — <span style="color:var(--accent)">Tagda Glow</span> har roz</h1>
+        <p class="lead">Natural ingredients, quick absorption, aur visible glow — specially designed for youth and everyday use. Bilkul lightweight, par glow bahut zyada.</p>
+
+        <div class="taglines">
+          <div class="chip">Dermatologist friendly</div>
+          <div class="chip">Non-greasy</div>
+          <div class="chip">For daily use</div>
+        </div>
+
+        <div style="margin-top:18px" class="cta-row">
+          <button class="btn" id="buy" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order Abhi</button>
+          <div class="price-bubble">Intro ₹249 only</div>
+        </div>
+
+        <div style="margin-top:16px;color:#666;font-size:14px">Tagline ideas: <b>“Khil uthe chehra, har roz — Glow Max ke saath”</b> ✨</div>
+      </div>
+
+      <div class="card-wrap">
+        <div class="product-card" id="pcard">
+          <div class="product-top">
+            <div class="bottle">
+              <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=0a9b9c042b609a4b3f2ec6b0e1e43b65" alt="Glow Max Cream jar">
+              <div class="glow-ring"></div>
+            </div>
+          </div>
+
+          <div class="product-features">
+            <div class="feature">
+              <h4>Visible Glow</h4>
+              <p>7 din me fark</p>
+            </div>
+            <div class="feature">
+              <h4>Lightweight</h4>
+              <p>Non-greasy formula</p>
+            </div>
+            <div class="feature">
+              <h4>Natural</h4>
+              <p>Plant extracts</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- BEFORE / AFTER -->
+    <section class="before-after">
+      <div>
+        <h3 style="margin:6px 0 10px">Before → After (Realistic Demo)</h3>
+        <div class="ba-wrapper" id="ba">
+          <img class="ba-before" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=3f3a0f3f0fae5d8c2d6f3b8a3a2f3efe" alt="before skin">
+          <div class="ba-after" id="after">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=62b2d6a0a7ad7b5b9e59b2d7f3c9d8b1" alt="after skin">
+          </div>
+          <div class="ba-handle" id="handle"><div class="ba-dot">⇄</div></div>
+        </div>
+        <input class="ba-range" id="range" type="range" min="0" max="100" value="50">
+      </div>
+
+      <div style="max-width:380px">
+        <h3 style="margin:6px 0 10px">Taglines for ad</h3>
+        <ul style="line-height:1.6; color:#333">
+          <li><b>“Khil uthe chehra, har roz”</b> — Daily glow formula.</li>
+          <li><b>“Confidence in every application”</b> — Instant softening feel.</li>
+          <li><b>“Glow that stays — Glow Max”</b> — Longer lasting radiance.</li>
+        </ul>
+
+        <div style="margin-top:18px">
+          <button class="btn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order Sample</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials" id="testimonials">
+      <h3 style="margin:6px 0 12px">Happy Clients</h3>
+      <div class="t-slider" id="t-slider">
+        <div class="t-card">
+          <h4>Riya Sharma</h4>
+          <p>“3 din me skin bright lagi — aur makeup kam lagta hai. ❤️”</p>
+        </div>
+        <div class="t-card">
+          <h4>Ananya Verma</h4>
+          <p>“Non-greasy, aur smell bhi light. Roz use karti hoon.”</p>
+        </div>
+        <div class="t-card">
+          <h4>Sneha Gupta</h4>
+          <p>“Friends ne poocha kya use kar rahi ho — glow real hai!”</p>
+        </div>
+        <div class="t-card">
+          <h4>Vikram</h4>
+          <p>“Maine gift kiya apni behen ko — use bahut pasand aaya.”</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPONSOR -->
+    <section class="sponsor" aria-label="Sponsor">
+      <div class="s-photo">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=3f3a0f3f0fae5d8c2d6f3b8a3a2f3efe" style="width:100%;height:100%;object-fit:cover" alt="Tarnnum Ma'am portrait">
+      </div>
+      <div class="s-info">
+        <h3>Tarnnum Ma'am</h3>
+        <p><strong>Our Sponsor & Supporter</strong> — A highly qualified Hindi teacher who supported this campaign and guided our messaging. </p>
+        <p style="margin-top:10px;color:#444">“Education + Beauty — responsible choices for youth.”</p>
+      </div>
+    </section>
+
+    <!-- ORDER / CONTACT -->
+    <section style="max-width:900px;margin:28px auto;padding:24px;border-radius:12px;">
+      <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:linear-gradient(180deg,#fff,#fff);padding:18px;border-radius:12px;box-shadow:0 12px 30px rgba(3,8,23,0.04)">
+        <div style="flex:1;min-width:260px;">
+          <h3 style="margin:0 0 8px">Order Sample Pack</h3>
+          <p style="margin:0 0 12px;color:#444">Fill details and we will contact you. (Demo / class project mode — this is a static demo page.)</p>
+
+          <form id="orderForm" onsubmit="handleOrder(event)">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <input required placeholder="Your name" id="name" style="padding:10px;border-radius:8px;border:1px solid #eee;flex:1">
+              <input required placeholder="Phone / Email" id="contact" style="padding:10px;border-radius:8px;border:1px solid #eee;flex:1">
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px">
+              <button class="btn" type="submit">Send Order</button>
+              <button class="btn ghost" type="button" onclick="mailto()">Contact via Email</button>
+            </div>
+            <div id="orderMsg" style="margin-top:10px;color:green;font-weight:600"></div>
+          </form>
+
+        </div>
+
+        <div style="min-width:260px; text-align:right">
+          <div style="font-size:14px;color:#666">Price (Intro)</div>
+          <div style="font-size:26px;font-weight:800;color:var(--accent)">₹249 <span style="font-size:14px;color:#666;font-weight:600">/ sample</span></div>
+          <div style="margin-top:12px;color:#444">Fast delivery • Secure packing</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © Glow Max • Demo Ad Landing • Built with ❤️ for class/project
+  </footer>
+
+  <script>
+    // 3D tilt on mousemove for product
+    const pcard = document.getElementById('pcard');
+    pcard.addEventListener('mousemove', (e) => {
+      const rect = pcard.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      const rx = (y - 0.5) * 12;
+      const ry = (x - 0.5) * -18;
+      pcard.style.transform = `rotateY(${ry}deg) rotateX(${rx}deg) translateY(-6px)`;
+    });
+    pcard.addEventListener('mouseleave', () => { pcard.style.transform='translateY(0)'; pcard.style.transform=''; });
+
+    // Before-after slider
+    const range = document.getElementById('range');
+    const after = document.getElementById('after');
+    const handle = document.getElementById('handle');
+    function updateBA(v){
+      after.style.width = v + '%';
+      handle.style.left = v + '%';
+      handle.style.transform = 'translateX(-50%)';
+    }
+    range.addEventListener('input', (e) => updateBA(e.target.value));
+    updateBA(range.value);
+
+    // Testimonial small auto-scroll
+    const tslider = document.getElementById('t-slider');
+    let tPos = 0;
+    setInterval(() => {
+      tPos += 280;
+      if (tPos > tslider.scrollWidth - tslider.clientWidth) tPos = 0;
+      tslider.scrollTo({ left: tPos, behavior: 'smooth' });
+    }, 3500);
+
+    // Simple order handler (static demo)
+    function handleOrder(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      document.getElementById('orderMsg').innerText = 'Thanks ' + name + '! We received your request. (Demo)';
+      // In real app: send to server or use Formspree / Netlify Forms / Google Forms
+    }
+
+    function mailto(){
+      window.location.href = 'mailto:example@glowmax.com?subject=Glow%20Max%20Inquiry&body=Hello%2C%20I%20want%20to%20know%20about%20Glow%20Max.';
+    }
+  </script>
+
+</body>
+</html>
